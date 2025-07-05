@@ -20,12 +20,10 @@ const supabase = createClient(
 
 interface ConsultationInterfaceProps {
   onSubmit?: (question: string) => void;
-  onSaveToHistory?: (question: string, response: string) => void;
 }
 
 const ConsultationInterface = ({
   onSubmit = () => {},
-  onSaveToHistory = () => {},
 }: ConsultationInterfaceProps) => {
   const [question, setQuestion] = useState<string>("");
   const [response, setResponse] = useState<string>("");
@@ -66,7 +64,6 @@ const ConsultationInterface = ({
         data.advice || "No advice returned from Thiruvalluvar.";
 
       setResponse(formattedResponse);
-      onSaveToHistory(question, formattedResponse);
     } catch (err) {
       console.error("Error calling Valluvar consultation:", err);
       setError("Unable to connect to Valluvar. Using fallback wisdom.");
@@ -75,7 +72,6 @@ const ConsultationInterface = ({
       const fallbackResponse =
         fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
       setResponse(fallbackResponse);
-      onSaveToHistory(question, fallbackResponse);
     } finally {
       setIsLoading(false);
     }
